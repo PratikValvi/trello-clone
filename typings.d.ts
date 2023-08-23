@@ -1,6 +1,6 @@
 type TypeColumn = "todo" | "inprogress" | "done"
 
-type todos = {
+type Todo = {
   $id: string,
   $createdAt: string,
   title: string,
@@ -9,7 +9,7 @@ type todos = {
 
 interface Column {
   id: TypeColumn
-  todos: todos[]
+  todos: Todo[]
 }
 
 
