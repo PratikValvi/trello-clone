@@ -6,7 +6,8 @@ import Avatar from 'react-avatar';
 
 const Header = () => {
   return (
-    <header>
+    <header className='relative'>
+      <div className='absolute top-0 left-0 w-full h-screen z-[-1] bg-gradient-to-b from-purple-400 to-transparent'></div>
       <div className='flex flex-col md:flex-row items-center p-5 bg-gray-500/10 rounded-b-2xl'>
         <Image
           src="https://links.papareact.com/c2cdd5"
