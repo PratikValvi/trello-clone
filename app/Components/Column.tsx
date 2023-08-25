@@ -2,6 +2,7 @@ import { PlusCircleIcon } from '@heroicons/react/20/solid';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import TodoCard from './TodoCard';
 import { useBoardStore } from '@/store/BoardStore';
+import { useModalStore } from '@/store/ModalStore';
 
 type Props = {
   id: string,
@@ -22,12 +23,19 @@ const idToColumnText = (id: string) => {
 
 const Column = ({ id, todos, index }: Props) => {
 
-  const [searchString] = useBoardStore((state) => [state.searchString]);
+  const [searchString, setNewTaskType] = useBoardStore((state) => [state.searchString, state.setNewTaskType]);
+
+  const [openModal] = useModalStore((state) => [state.openModal]);
 
   let todosToBeRendered = todos
   if (searchString) {
     todosToBeRendered = todos
       .filter((todo) => todo.title.toLowerCase().includes(searchString.toLowerCase()))
+  }
+
+  const handleOpenModal = () => {
+    setNewTaskType(id);
+    openModal();
   }
 
   return (
@@ -89,6 +97,7 @@ const Column = ({ id, todos, index }: Props) => {
                         <button className='text-green-500 hover:text-green-600'>
                           <PlusCircleIcon
                             className='h-10 w-10'
+                            onClick={handleOpenModal}
                           />
                         </button>
                       </div>

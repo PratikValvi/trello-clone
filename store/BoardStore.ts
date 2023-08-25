@@ -1,15 +1,20 @@
 import { create } from "zustand";
 import { getTodosGroupedByColumn } from "@/lib/getTodosGroupedByColumn";
-import { databases } from "@/appwrite";
+import { databases, ID } from "@/appwrite";
 
 interface BoardState {
   board: Board;
   searchString: string;
+  newTaskInput: string;
+  newTaskType: string;
   getBoard: () => void;
   setBoardState: (board: Board) => void;
   updateTodoOnDB: (todo: Todo, columnId: TypeColumn) => void;
   setSearchString: (searchString: string) => void;
   deleteTodo: (todoIndex: number, todo: Todo, columnId: string) => void;
+  setNewTaskInput: (input: string) => void;
+  setNewTaskType: (columnId: string) => void;
+  addTask: (todo: string, columnId: string) => void;
 }
 
 export const useBoardStore = create<BoardState>((set, get) => ({
@@ -17,6 +22,8 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     columns: new Map<TypeColumn, Column>()
   },
   searchString: "",
+  newTaskInput: "",
+  newTaskType: "todo",
   getBoard: async () => {
     const board = await getTodosGroupedByColumn();
     set({ board })
@@ -44,5 +51,48 @@ export const useBoardStore = create<BoardState>((set, get) => ({
       process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID,
       todo.$id,
     )
-  }
+  },
+  setNewTaskInput: (value) => set({ newTaskInput: value }),
+  setNewTaskType: (value) => set({ newTaskType: value }),
+  addTask: async (todo, columnId) => {
+    const { $id } = await databases.createDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID,
+      ID.unique(),
+      {
+        title: todo,
+        status: columnId
+      }
+    );
+
+    set({ newTaskInput: "" });
+
+    set((state) => {
+      const newColoumns = new Map(state.board.columns);
+
+      const newTodo: Todo = {
+        $id,
+        $createdAt: new Date().toISOString(),
+        title: todo,
+        status: columnId,
+      };
+
+      const column = newColoumns.get(columnId);
+
+      if (!column) {
+        newColoumns.set(columnId, {
+          id: columnId,
+          todos: [newTodo],
+        });
+      } else {
+        newColoumns.get(columnId)?.todos.push(newTodo);
+      }
+
+      return {
+        board: {
+          columns: newColoumns,
+        }
+      }
+    })
+  },
 }))
