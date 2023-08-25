@@ -9,7 +9,7 @@ interface BoardState {
   setBoardState: (board: Board) => void;
   updateTodoOnDB: (todo: Todo, columnId: TypeColumn) => void;
   setSearchString: (searchString: string) => void;
-  deleteTodo: (todoIndex: number, todo: Todo, columnId: TypeColumn) => void;
+  deleteTodo: (todoIndex: number, todo: Todo, columnId: string) => void;
 }
 
 export const useBoardStore = create<BoardState>((set, get) => ({

@@ -10,7 +10,7 @@ import {
 type Props = {
   todo: Todo;
   index: number;
-  id: TypeColumn;
+  id: string;
   innerRef: (element: HTMLElement | null) => void;
   draggableProps: DraggableProvidedDraggableProps;
   dragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
