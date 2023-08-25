@@ -14,7 +14,6 @@ const Modal = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //Add Task
-    console.log("handle")
     addTask(newTaskInput, newTaskType);
     closeModal();
   }
