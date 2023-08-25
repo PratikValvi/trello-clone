@@ -16,6 +16,7 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   board: {
     columns: new Map<TypeColumn, Column>()
   },
+  searchString: "",
   getBoard: async () => {
     const board = await getTodosGroupedByColumn();
     set({ board })

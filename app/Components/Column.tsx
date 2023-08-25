@@ -58,26 +58,31 @@ const Column = ({ id, todos, index }: Props) => {
                       className='space-y-2'
                     >
                       {
-                        todosToBeRendered.map((todo, index) => (
-                          <Draggable
-                            key={todo.$id}
-                            draggableId={todo.$id}
-                            index={index}
-                          >
-                            {
-                              (provided) => (
-                                <TodoCard
-                                  todo={todo}
-                                  index={index}
-                                  id={id}
-                                  innerRef={provided.innerRef}
-                                  draggableProps={provided.draggableProps}
-                                  dragHandleProps={provided.dragHandleProps}
-                                />
-                              )
-                            }
-                          </Draggable>
-                        ))
+                        todos.map((todo, index) => {
+                          if (todo.title.toLowerCase().includes(searchString?.toLowerCase())) {
+                            return (
+                              <Draggable
+                                key={todo.$id}
+                                draggableId={todo.$id}
+                                index={index}
+                              >
+                                {
+                                  (provided) => (
+                                    <TodoCard
+                                      todo={todo}
+                                      index={index}
+                                      id={id}
+                                      innerRef={provided.innerRef}
+                                      draggableProps={provided.draggableProps}
+                                      dragHandleProps={provided.dragHandleProps}
+                                    />
+                                  )
+                                }
+                              </Draggable>
+                            )
+                          }
+                          return null
+                        })
                       }
                       {provided.placeholder}
                       <div className='flex items-end justify-end p-2'>
