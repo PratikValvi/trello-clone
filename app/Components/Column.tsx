@@ -1,6 +1,7 @@
 import { PlusCircleIcon } from '@heroicons/react/20/solid';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import TodoCard from './TodoCard';
+import { useBoardStore } from '@/store/BoardStore';
 
 type Props = {
   id: string,
@@ -20,6 +21,15 @@ const idToColumnText = (id: string) => {
 };
 
 const Column = ({ id, todos, index }: Props) => {
+
+  const [searchString] = useBoardStore((state) => [state.searchString]);
+
+  let todosToBeRendered = todos
+  if (searchString) {
+    todosToBeRendered = todos
+      .filter((todo) => todo.title.toLowerCase().includes(searchString.toLowerCase()))
+  }
+
   return (
     <Draggable draggableId={id} index={index}>
       {
@@ -41,14 +51,14 @@ const Column = ({ id, todos, index }: Props) => {
                       className='flex justify-between font-bold text-xl p-2'
                     >
                       {idToColumnText(id)}
-                      <span className='text-gray-500 bg-gray-200 rounded-full px-2 py-1 text-sm'>{todos.length}</span>
+                      <span className='text-gray-500 bg-gray-200 rounded-full px-2 py-1 text-sm'>{todosToBeRendered.length}</span>
                     </h2>
 
                     <div
                       className='space-y-2'
                     >
                       {
-                        todos.map((todo, index) => (
+                        todosToBeRendered.map((todo, index) => (
                           <Draggable
                             key={todo.$id}
                             draggableId={todo.$id}
