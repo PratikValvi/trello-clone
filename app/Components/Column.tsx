@@ -5,7 +5,7 @@ import { useBoardStore } from '@/store/BoardStore';
 import { useModalStore } from '@/store/ModalStore';
 
 type Props = {
-  id: string,
+  id: TypeColumn,
   todos: Todo[],
   index: number
 }

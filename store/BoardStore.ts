@@ -6,15 +6,15 @@ interface BoardState {
   board: Board;
   searchString: string;
   newTaskInput: string;
-  newTaskType: string;
+  newTaskType: TypeColumn;
   getBoard: () => void;
   setBoardState: (board: Board) => void;
   updateTodoOnDB: (todo: Todo, columnId: TypeColumn) => void;
   setSearchString: (searchString: string) => void;
-  deleteTodo: (todoIndex: number, todo: Todo, columnId: string) => void;
+  deleteTodo: (todoIndex: number, todo: Todo, columnId: TypeColumn) => void;
   setNewTaskInput: (input: string) => void;
-  setNewTaskType: (columnId: string) => void;
-  addTask: (todo: string, columnId: string) => void;
+  setNewTaskType: (columnId: TypeColumn) => void;
+  addTask: (todo: string, columnId: TypeColumn) => void;
 }
 
 export const useBoardStore = create<BoardState>((set, get) => ({
