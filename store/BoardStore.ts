@@ -31,8 +31,8 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   setBoardState: (board) => set({ board }),
   updateTodoOnDB: async (todo, columnId) => {
     await databases.updateDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID,
-      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID,
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
       todo.$id,
       {
         title: todo.title,
@@ -47,8 +47,8 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     set({ board: { columns: newColoumns } });
 
     await databases.deleteDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID,
-      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID,
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
       todo.$id,
     )
   },
@@ -56,8 +56,8 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   setNewTaskType: (value) => set({ newTaskType: value }),
   addTask: async (todo, columnId) => {
     const { $id } = await databases.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID,
-      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID,
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
       ID.unique(),
       {
         title: todo,
